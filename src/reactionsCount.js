@@ -9,33 +9,30 @@ export default function ReactionsCount() {
     const [heart, setHeart] = useState(170);
     const [sad, setSad] = useState(5);
 
-    const [liked, setLiked] = useState(false);
-    const [hearted, setHearted] = useState(false)
-    const [saded, setSaded] = useState(false);
+    const [active,setActive] = useState(null);
 
-    const clickLiked = () => {
-        if (!liked) {
-            setLike(like + 1);
-        } else {
-            setLike(like - 1);
+    const handleReaction = (type) => {
+        if(active === "like") setLike(like -1);
+        if(active === "heart") setHeart(heart -1);
+        if(active === "sad") setSad(sad-1);
+
+        if(active === type){
+            setActive(null);
+            return;
         }
-        setLiked(!liked);
+
+        if(type === "like") setLike(like + 1);
+        if(type === "heart") setHeart(heart + 1);
+        if(type === "sad") setSad(sad + 1);
+
+        console.log("Called");
+        
+
+        setActive(type);
     }
-    const clickHeart = () => {
-        if (!hearted) {
-            setHeart(heart + 1);
-        } else {
-            setHeart(heart - 1);
-        }
-        setHearted(!hearted);
-    }
-    const clickSad = () => {
-        if (!saded) {
-            setSad(sad + 1);
-        } else {
-            setSad(sad - 1);
-        }
-        setSaded(!saded)
+
+    const btnClass = (type) => {
+             return  `btn border rounded-circle p-2 ${active === type ? "btn-primary" : "btn-light"}`
     }
     return (
         <div className="container mt-5">
@@ -43,8 +40,8 @@ export default function ReactionsCount() {
 
                 <div className="text-center">
                     <button
-                        className={`btn border rounded-circle p-2 ${liked ? "btn-primary" : "btn-light"}`}
-                        onClick={clickLiked}
+                        className={btnClass("like")}
+                        onClick={()=> handleReaction('like')}
                     >
                         <img
                             alt="like"
@@ -57,8 +54,8 @@ export default function ReactionsCount() {
 
                 <div className="text-center">
                     <button
-                        className={`btn border rounded-circle p-2 ${hearted ? "btn-primary" : "btn-light"}`}
-                        onClick={clickHeart}
+                        className={btnClass("heart")}
+                        onClick={()=>handleReaction('heart')}
                     >
                         <img
                             alt="heart"
@@ -71,8 +68,8 @@ export default function ReactionsCount() {
 
                 <div className="text-center">
                     <button
-                        className={`btn border rounded-circle p-2 ${saded ? "btn-primary" : "btn-light"}`}
-                        onClick={clickSad}
+                        className={btnClass("sad")}
+                        onClick={()=>handleReaction('sad')}
                     >
                         <img
                             alt="sad"
